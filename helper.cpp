@@ -106,14 +106,18 @@ bool Helper::WriteSaveFile(const QString &filename, QString text)
     QFile file(filename);
     if(file.open(QIODevice::ReadWrite|QIODevice::Text)){
         QTextStream out(&file);
-        if(text!=NULL){
+        if(text!=NULL){//内容不为空写入数据
             out<<text;
+            out.flush();
             file.close();
-        }else {
+            return true;
+        }else {//内容为空拒绝写入日志/写入日志失败,删除创建的文件
             file.close();
+            file.remove();//删除文件
+            return false;
         }
-        return true;
-    }else {
+    }else {//文件不存在时创建文件失败
+        file.close();
         return false;
     }
     return false;

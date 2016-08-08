@@ -10,7 +10,7 @@ AmerdaWidget::AmerdaWidget(QWidget *parent) :
     ui(new Ui::AmerdaWidget)
 {
     ui->setupUi(this);
-
+    help = new Helper(this);
     setLanguage("English");
     initAmerdaCruve();
     isEnglish = true;
@@ -115,7 +115,7 @@ void AmerdaWidget::initAmerdaCruve()
     ui->qCustomPlot->yAxis->setAutoTickStep(false);
     ui->qCustomPlot->yAxis->setTickStep(50);
     ui->qCustomPlot->yAxis->setLabel("(mmg/H)");
-    ui->qCustomPlot->yAxis->setTickLabelRotation(22.5);
+    ui->qCustomPlot->yAxis->setTickLabelRotation(22.5);//标签翻转角度
     //绘制x轴信息
     ui->qCustomPlot->xAxis->setLabelFont(font);
     ui->qCustomPlot->xAxis->setLabelColor("#FF007F");
@@ -157,10 +157,13 @@ bool AmerdaWidget::AmerdaLogSave()
 {
 
     QString logName = "./ameda-"+QDateTime::currentDateTime().toString("yyyy-MM-dd-hh-mm-ss")+".log";
-    qDebug()<<logName;
+    qDebug()<<"Log File Path: "+logName;
     QString text =NULL;
 
-
+    bool result = help->WriteSaveFile(logName,text);
+    if(result){
+        return true;
+    }
     return false;
 }
 /**
@@ -172,7 +175,7 @@ bool AmerdaWidget::AmerdaCruveSave()
 
 //    QString pdfPath = QStandardPaths::displayName(QStandardPaths::DocumentsLocation);
     QString pdfName = "./ameda-"+QDateTime::currentDateTime().toString("yyyy-MM-dd-hh-mm-ss")+".pdf";
-    qDebug()<<pdfName;
+    qDebug()<<"Pdf File Path: "+pdfName;
     /*
       保存pdf文档
     */
@@ -199,7 +202,7 @@ void AmerdaWidget::paintEvent(QPaintEvent *)
  */
 void AmerdaWidget::on_TestButton_clicked()
 {
-
+  qDebug()<<"Start Inspection:"<<ui->comboBox->currentText()<<"+"<<ui->comboBox_2->currentText();
 
 }
 /**
@@ -225,16 +228,12 @@ void AmerdaWidget::on_SaveButton_clicked()
     isPdf = AmerdaCruveSave();
     if(isLog&&isPdf){
         QMessageBox::about(NULL,"SAVE AMEDA DATA","save Ameda data sussess.");
-//        qDebug()<<"Save Log and Pdf";
     }else if (isLog==true||isPdf==false) {
         QMessageBox::about(NULL,"SAVE AMEDA DATA","save Ameda Log sussess.");
-//        qDebug()<<"Save Log success,Save Pdf failed.";
     }else if (isLog==false||isPdf==true) {
         QMessageBox::about(NULL,"SAVE AMEDA DATA","save Ameda Cruve sussess.");
-//        qDebug()<<"Save Pdf success,Save Log failed.";
     }else {
         QMessageBox::about(NULL,"SAVE AMEDA DATA","save all Ameda data failed.");
-//        qDebug()<<"Save Ameda data failed.";
     }
 }
 /**

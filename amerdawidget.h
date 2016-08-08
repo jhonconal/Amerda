@@ -12,6 +12,7 @@
 #include <QPaintEvent>
 #include <QMessageBox>
 #include "qcustomplot.h"
+#include "helper.h"
 namespace Ui {
 class AmerdaWidget;
 }
@@ -95,6 +96,7 @@ private:
 
     qreal Max,Min,Frequency;
     bool Status,isEnglish;
+    Helper *help;
 };
 
 #endif // AMERDAWIDGET_H
