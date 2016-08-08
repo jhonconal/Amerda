@@ -8,10 +8,21 @@ INCLUDEPATH += .
 
 # Input
 HEADERS += amerdawidget.h qcustomplot.h \
-    helper.h
+    helper.h \
+    amerdathread.h
 FORMS += amerdawidget.ui
 SOURCES += amerdawidget.cpp main.cpp qcustomplot.cpp \
-    helper.cpp
+    helper.cpp \
+    amerdathread.cpp
 
 
 QT +=gui core  widgets  printsupport
+
+RESOURCES += \
+    src.qrc
+
+VERSION = 1.0
+QMAKE_TARGET_PRODUCT = Ameda
+QMAKE_TARGET_COMPANY = ebulent
+QMAKE_TARGET_DESCRIPTION = qian.yang@ebulent.com
+QMAKE_TARGET_COPYRIGHT = Copyright©2016ebulent(shenzhen)Co.,LTD. All Right Reserved.

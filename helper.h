@@ -1,3 +1,13 @@
+/**********************************************************
+**This is available in all editors.
+**Copyright (c) 2016
+**Contact: http://www.ebulent.com.cn/
+**Author: qain.yang
+**Postion: Softwere engineer
+**email:qian.yang@ebulent.com.cn jhonconal@outlook.com
+**This app sourcecode are for ameda test
+**
+***********************************************************/
 #ifndef HELPER_H
 #define HELPER_H
 

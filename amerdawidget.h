@@ -1,3 +1,13 @@
+/**********************************************************
+**This is available in all editors.
+**Copyright (c) 2016
+**Contact: http://www.ebulent.com.cn/
+**Author: qain.yang
+**Postion: Softwere engineer
+**email:qian.yang@ebulent.com.cn jhonconal@outlook.com
+**This app sourcecode are for ameda test
+**
+***********************************************************/
 #ifndef AMERDAWIDGET_H
 #define AMERDAWIDGET_H
 
@@ -13,6 +23,7 @@
 #include <QMessageBox>
 #include "qcustomplot.h"
 #include "helper.h"
+#include "amerdathread.h"
 namespace Ui {
 class AmerdaWidget;
 }
@@ -97,6 +108,7 @@ private:
     qreal Max,Min,Frequency;
     bool Status,isEnglish;
     Helper *help;
+    AmerdaThread *amerda;
 };
 
 #endif // AMERDAWIDGET_H

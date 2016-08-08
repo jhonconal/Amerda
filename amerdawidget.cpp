@@ -1,3 +1,13 @@
+/**********************************************************
+**This is available in all editors.
+**Copyright (c) 2016
+**Contact: http://www.ebulent.com.cn/
+**Author: qain.yang
+**Postion: Softwere engineer
+**email:qian.yang@ebulent.com.cn jhonconal@outlook.com
+**This app sourcecode are for ameda test
+**
+***********************************************************/
 #include "amerdawidget.h"
 #include "ui_amerdawidget.h"
 #if QT_VERSION > QT_VERSION_CHECK(5, 0, 0)
@@ -19,7 +29,7 @@ AmerdaWidget::AmerdaWidget(QWidget *parent) :
     int width  = desktop->screenGeometry().width();
     int heigh  = desktop->screenGeometry().height();
     updateTimer = new QTimer(this);
-    updateTimer->setInterval(5*1000);
+    updateTimer->setInterval(500);
 
     connect(updateTimer,SIGNAL(timeout()),this,SLOT(RealTimeDataSlot()));
     updateTimer->start(0);
@@ -105,7 +115,7 @@ void AmerdaWidget::initAmerdaCruve()
 //    ui->qCustomPlot->plotLayout()->insertRow(0);
 //    ui->qCustomPlot->plotLayout()->addElement(0, 0, new QCPPlotTitle(ui->qCustomPlot, "Pressure Cruve"));
     ui->qCustomPlot->graph()->setPen(pen);
-    ui->qCustomPlot->graph(0)->setLineStyle((QCPGraph::LineStyle)(3));
+    ui->qCustomPlot->graph(0)->setLineStyle((QCPGraph::LineStyle)(1));
     ui->qCustomPlot->graph(0)->setScatterStyle(QCPScatterStyle((QCPScatterStyle::ScatterShape)(11)));
     //绘制y轴信息
     ui->qCustomPlot->yAxis->setLabelFont(font);
@@ -203,7 +213,9 @@ void AmerdaWidget::paintEvent(QPaintEvent *)
 void AmerdaWidget::on_TestButton_clicked()
 {
   qDebug()<<"Start Inspection:"<<ui->comboBox->currentText()<<"+"<<ui->comboBox_2->currentText();
-
+  amerda =  new AmerdaThread();
+  amerda =new AmerdaThread(this);
+  amerda->start();
 }
 /**
  * @brief AmerdaWidget::on_SaveButton_clicked
@@ -227,11 +239,11 @@ void AmerdaWidget::on_SaveButton_clicked()
      */
     isPdf = AmerdaCruveSave();
     if(isLog&&isPdf){
-        QMessageBox::about(NULL,"SAVE AMEDA DATA","save Ameda data sussess.");
+        QMessageBox::about(NULL,"SAVE AMEDA DATA","save all Ameda data sussess.");
     }else if (isLog==true||isPdf==false) {
-        QMessageBox::about(NULL,"SAVE AMEDA DATA","save Ameda Log sussess.");
+        QMessageBox::about(NULL,"SAVE AMEDA DATA","save Ameda Log sussess, Ameda Cruve failed.");
     }else if (isLog==false||isPdf==true) {
-        QMessageBox::about(NULL,"SAVE AMEDA DATA","save Ameda Cruve sussess.");
+        QMessageBox::about(NULL,"SAVE AMEDA DATA","save Ameda Cruve sussess, Ameda Log failed.");
     }else {
         QMessageBox::about(NULL,"SAVE AMEDA DATA","save all Ameda data failed.");
     }
@@ -258,7 +270,7 @@ void AmerdaWidget::RealTimeDataSlot()
 
    static double lastPointKey = 0.0;
 
-   if(key - lastPointKey >0.1)
+   if(key - lastPointKey >0.025)
    {
        QTime time;
        time = QTime::currentTime();

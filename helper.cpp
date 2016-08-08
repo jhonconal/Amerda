@@ -1,3 +1,13 @@
+/**********************************************************
+**This is available in all editors.
+**Copyright (c) 2016
+**Contact: http://www.ebulent.com.cn/
+**Author: qain.yang
+**Postion: Softwere engineer
+**email:qian.yang@ebulent.com.cn jhonconal@outlook.com
+**This app sourcecode are for ameda test
+**
+***********************************************************/
 #include "helper.h"
 
 Helper::Helper(QObject *parent) : QObject(parent)
@@ -42,7 +52,7 @@ void Helper::SetGB232Code()
 void Helper::SetChinese()
 {
     QTranslator  *translator =new QTranslator(qApp);
-    translator->load(":/fonts/qt_zh_CN.qm");
+    translator->load(":src/fonts/qt_zh_CN.qm");
     qApp->installTranslator(translator);
 }
 
@@ -61,7 +71,8 @@ char *Helper::String2Char(QString str)
 
 void Helper::PlaySound(QString soundName)
 {
-    //使用绝对路径
+  //使用绝对路径
+  Q_UNUSED (soundName)
 #ifdef Q_OS_LINUX
     QSound::play(soundName);
 #endif
