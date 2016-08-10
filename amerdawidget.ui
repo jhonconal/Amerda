@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>622</height>
+    <width>977</width>
+    <height>531</height>
    </rect>
   </property>
   <property name="font">
@@ -73,6 +73,19 @@ background-color: rgb(76, 76, 76);
               <property name="topMargin">
                <number>2</number>
               </property>
+              <item row="0" column="1">
+               <spacer name="horizontalSpacer_2">
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>40</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
               <item row="0" column="0">
                <widget class="QLabel" name="Label_2">
                 <property name="font">
@@ -92,18 +105,25 @@ background-color: rgb(76, 76, 76);
                 </property>
                </widget>
               </item>
-              <item row="0" column="1">
-               <spacer name="horizontalSpacer_2">
-                <property name="orientation">
-                 <enum>Qt::Horizontal</enum>
+              <item row="0" column="2">
+               <widget class="QLabel" name="label">
+                <property name="font">
+                 <font>
+                  <pointsize>16</pointsize>
+                  <weight>75</weight>
+                  <bold>true</bold>
+                 </font>
                 </property>
-                <property name="sizeHint" stdset="0">
-                 <size>
-                  <width>40</width>
-                  <height>20</height>
-                 </size>
+                <property name="styleSheet">
+                 <string notr="true">color: rgb(85, 170, 0);</string>
                 </property>
-               </spacer>
+                <property name="text">
+                 <string>    1Mpa≈760mmHg  </string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
               </item>
              </layout>
             </item>
@@ -323,13 +343,13 @@ background-color: rgb(76, 76, 76);
          </property>
          <layout class="QGridLayout" name="gridLayout_10" rowstretch="0,10">
           <property name="leftMargin">
-           <number>3</number>
+           <number>1</number>
           </property>
           <property name="topMargin">
            <number>0</number>
           </property>
           <property name="rightMargin">
-           <number>3</number>
+           <number>1</number>
           </property>
           <property name="bottomMargin">
            <number>3</number>
@@ -339,6 +359,22 @@ background-color: rgb(76, 76, 76);
             <property name="topMargin">
              <number>2</number>
             </property>
+            <property name="horizontalSpacing">
+             <number>6</number>
+            </property>
+            <item row="0" column="1">
+             <spacer name="horizontalSpacer">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
             <item row="0" column="0">
              <widget class="QLabel" name="Label_3">
               <property name="font">
@@ -358,18 +394,25 @@ background-color: rgb(76, 76, 76);
               </property>
              </widget>
             </item>
-            <item row="0" column="1">
-             <spacer name="horizontalSpacer">
-              <property name="orientation">
-               <enum>Qt::Horizontal</enum>
+            <item row="0" column="2">
+             <widget class="QLabel" name="TimeLabel">
+              <property name="font">
+               <font>
+                <pointsize>16</pointsize>
+                <weight>75</weight>
+                <bold>true</bold>
+               </font>
               </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>40</width>
-                <height>20</height>
-               </size>
+              <property name="styleSheet">
+               <string notr="true">color: rgb(255, 255, 255);</string>
               </property>
-             </spacer>
+              <property name="text">
+               <string>         TIME       </string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignCenter</set>
+              </property>
+             </widget>
             </item>
            </layout>
           </item>
@@ -421,7 +464,7 @@ background-color: rgb(76, 76, 76);
              <number>3</number>
             </property>
             <property name="verticalSpacing">
-             <number>-1</number>
+             <number>6</number>
             </property>
             <item row="2" column="0">
              <widget class="QLineEdit" name="MaxValueLineEdit">

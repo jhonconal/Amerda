@@ -25,4 +25,4 @@ VERSION = 1.0
 QMAKE_TARGET_PRODUCT = Ameda
 QMAKE_TARGET_COMPANY = ebulent
 QMAKE_TARGET_DESCRIPTION = qian.yang@ebulent.com
-QMAKE_TARGET_COPYRIGHT = Copyright©2016ebulent(shenzhen)Co.,LTD. All Right Reserved.
+QMAKE_TARGET_COPYRIGHT = Copyright(c)2016 ebulent(shenzhen)Co.,LTD. All Right Reserved.

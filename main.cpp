@@ -1,13 +1,13 @@
-/**********************************************************
+/**************************************************************
 **This is available in all editors.
-**Copyright (c) 2016
+**Copyright(c)2016 ebulent(shenzhen)Co.,LTD. All Right Reserved.
 **Contact: http://www.ebulent.com.cn/
 **Author: qain.yang
 **Postion: Softwere engineer
 **email:qian.yang@ebulent.com.cn jhonconal@outlook.com
 **This app sourcecode are for ameda test
 **
-***********************************************************/
+***************************************************************/
 #include "amerdawidget.h"
 #include <QApplication>
 #include <QTextCodec>
