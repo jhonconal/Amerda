@@ -9,11 +9,14 @@ INCLUDEPATH += .
 # Input
 HEADERS += amerdawidget.h qcustomplot.h \
     helper.h \
-    amerdathread.h
-FORMS += amerdawidget.ui
+    amerdathread.h \
+    messagebox.h
+FORMS += amerdawidget.ui \
+    messagebox.ui
 SOURCES += amerdawidget.cpp main.cpp qcustomplot.cpp \
     helper.cpp \
-    amerdathread.cpp
+    amerdathread.cpp \
+    messagebox.cpp
 
 
 QT +=gui core  widgets  printsupport

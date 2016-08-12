@@ -14,28 +14,21 @@
 #include <QStandardPaths>
 #else
 #endif
-#include <QDesktopWidget>
 #include "qstring.h"
 AmerdaWidget::AmerdaWidget(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::AmerdaWidget)
 {
     ui->setupUi(this);
-    help = new Helper(this);
-    setLanguage("English");
-    initAmerdaCruve();
-    isEnglish = true;
-    isPass = false;
+    init();
 
-    QDesktopWidget *desktop = QApplication::desktop();
-    int width  = desktop->screenGeometry().width();
-    int heigh  = desktop->screenGeometry().height();
-    updateTimer = new QTimer(this);
     updateTimer->setInterval(1000);
+    systemTimer->setInterval(1000);
 
     connect(updateTimer,SIGNAL(timeout()),this,SLOT(RealTimeDataSlot()));
+    connect(systemTimer,SIGNAL(timeout()),this,SLOT(SystemTimeSlot()));
     updateTimer->start(0);
-
+    systemTimer->start(0);
     //检测U盘
     int result = UDiskDetection();
     if(result == 0){
@@ -48,15 +41,35 @@ AmerdaWidget::AmerdaWidget(QWidget *parent) :
         qDebug()<<"UDisk uMounted.";
         //        QMessageBox::about(NULL,"UDisk Detection","UDisk uMounted.");
     }
-    this->resize(width,heigh);
-
-//    this->resize(1024,768);
-//    setWindowFlags(Qt::FramelessWindowHint);
+    this->resize(width,height);
+    //    this->resize(1024,768);
+    //    setWindowFlags(Qt::FramelessWindowHint);
 }
 
 AmerdaWidget::~AmerdaWidget()
 {
     delete ui;
+}
+
+void AmerdaWidget::init()
+{
+    help = new Helper(this);
+    setLanguage("English");
+
+    initAmerdaCruve();
+    initParametersValue();
+    isEnglish = true;
+    isPreview = true;
+    isStopTesting = false;
+
+    desktop = QApplication::desktop();
+    width  = desktop->screenGeometry().width();
+    height  = desktop->screenGeometry().height();
+
+    edit = new QTextEdit();
+    edit->setReadOnly(true);
+    updateTimer = new QTimer(this);
+    systemTimer = new QTimer(this);
 }
 /**
  * @brief AmerdaWidget::setLanguage
@@ -67,27 +80,33 @@ AmerdaWidget::~AmerdaWidget()
 bool AmerdaWidget::setLanguage(QString language)
 {
     if(language == "English"){
-        ui->Label_2->setText("TestGear:");
-        ui->Label_3->setText("PressureCurve:");
-        ui->Label_4->setText("TestStatus:");
+        ui->Label_2->setText("TestingChoice:");
+        ui->Label_3->setText("StardandArea :");
+        ui->SpeedAreaLabel->setText("SpeedArea:");
+        ui->PressureAreaLabel->setText("PressureArea:");
+        ui->Label_4->setText("TestingStatus:");
         ui->Label_5->setText("Parameters:");
         ui->TestButton->setText("Start");
-        ui->MaxValueLabel->setText("MaxValue");
-        ui->MinValueLabel->setText("MinValue");
+        ui->MaxValueLabel->setText("MaxValue(mmHg)");
+        ui->MinValueLabel->setText("MinValue(mmHg)");
         ui->FrequenceLabel->setText("Period/Frequency");
         ui->LanguageButton->setText("Language");
+        ui->LogButton->setText("Log Preview");
         ui->SaveButton->setText("Save");
         return true;
     }else {
-        ui->Label_2->setText("测试档位:");
-        ui->Label_3->setText("压力曲线:");
+        ui->Label_2->setText("测试选项:");
+        ui->Label_3->setText("标准区间:");
+        ui->SpeedAreaLabel->setText("速度范围:");
+        ui->PressureAreaLabel->setText("压力范围:");
         ui->Label_4->setText("测试状态:");
         ui->Label_5->setText("参数输出:");
         ui->TestButton->setText("启动");
-        ui->MaxValueLabel->setText("最大值");
-        ui->MinValueLabel->setText("最小值");
+        ui->MaxValueLabel->setText("最大值(mmHg)");
+        ui->MinValueLabel->setText("最小值(mmHg)");
         ui->FrequenceLabel->setText("周期/频率");
         ui->LanguageButton->setText("语言");
+        ui->LogButton->setText("日志预览");
         ui->SaveButton->setText("保存");
         return false;
     }
@@ -111,10 +130,12 @@ void AmerdaWidget::initParametersValue()
 void AmerdaWidget::initAmerdaCruve()
 {
     QPen pen;
-    QFont font;
+    QFont font,font2;
     font.setBold(true);
-    font.setPointSize(15);
-    pen.setWidth(2);
+    font2.setBold(true);
+    font2.setPointSize(15);
+    font.setPointSize(12);
+    pen.setWidth(1);
     pen.setColor(QColor(255, 0, 127));
     ui->qCustomPlot->legend->setVisible(true);
     ui->qCustomPlot->legend->setTextColor(Qt::blue);
@@ -122,33 +143,40 @@ void AmerdaWidget::initAmerdaCruve()
     ui->qCustomPlot->graph()->setPen(pen);
     ui->qCustomPlot->graph()->setAntialiasedFill(true);
     if(setLanguage("English")){
-        ui->qCustomPlot->graph()->setName("Pressure Cruve");
+        ui->qCustomPlot->graph(0)->setName("Pressure Cruve");
     }else {
-        ui->qCustomPlot->graph()->setName("压力曲线");
+        ui->qCustomPlot->graph(0)->setName("压力曲线");
     }
     ui->qCustomPlot->axisRect()->setupFullAxesBox();
-    //    ui->qCustomPlot->plotLayout()->insertRow(0);
-    //    ui->qCustomPlot->plotLayout()->addElement(0, 0, new QCPPlotTitle(ui->qCustomPlot, "Pressure Cruve"));
-    ui->qCustomPlot->graph(0)->setPen(pen);
+    //  ui->qCustomPlot->plotLayout()->insertRow(0);
+    //  ui->qCustomPlot->plotLayout()->addElement(0, 0, new QCPPlotTitle(ui->qCustomPlot, "Pressure Cruve"));
     ui->qCustomPlot->graph(0)->setLineStyle((QCPGraph::LineStyle)(1));
-    ui->qCustomPlot->graph(0)->setScatterStyle(QCPScatterStyle((QCPScatterStyle::ScatterShape)(11)));
+    ui->qCustomPlot->graph(0)->setScatterStyle(QCPScatterStyle((QCPScatterStyle::ScatterShape)(5)));
     //绘制y轴信息
+    ui->qCustomPlot->yAxis->setLabelPadding(0);
+    ui->qCustomPlot->yAxis->setTickLabelFont(font);
+    ui->qCustomPlot->yAxis->setLabelFont(font2);
     ui->qCustomPlot->yAxis->setAutoTickStep(false);
     ui->qCustomPlot->yAxis->setRangeReversed(false);
-    ui->qCustomPlot->yAxis->setLabelFont(font);
     ui->qCustomPlot->yAxis->setLabelColor("#FF007F");
-    ui->qCustomPlot->yAxis->setRange(0,10);
-    ui->qCustomPlot->yAxis->setTickStep(0.5);
-//    ui->qCustomPlot->yAxis->setLabel("(pressure/mmHg)");
-    ui->qCustomPlot->yAxis->setLabel("(pressure/Mpa)");
+    ui->qCustomPlot->yAxis->setRange(300,1000);
+    ui->qCustomPlot->yAxis->setTickStep(50);
+    ui->qCustomPlot->yAxis->setLabel("(pressure/mmHg)");
+    //    ui->qCustomPlot->yAxis->setLabel("(pressure/Mpa)");
     ui->qCustomPlot->yAxis->setTickLabelRotation(22.5);//标签翻转角度
+    //绘制y2轴信息
+    ui->qCustomPlot->yAxis2->setAutoTickStep(false);
+    ui->qCustomPlot->yAxis2->setRangeReversed(false);
+    ui->qCustomPlot->yAxis2->setRange(300,1000);
+    ui->qCustomPlot->yAxis2->setTickStep(50);
     //绘制x轴信息
+    ui->qCustomPlot->xAxis->setTickLabelFont(font);
+    ui->qCustomPlot->xAxis->setLabelFont(font);
     ui->qCustomPlot->xAxis->setAutoTickStep(false);
     ui->qCustomPlot->xAxis->setTickStep(1);
-    ui->qCustomPlot->xAxis->setLabelFont(font);
     ui->qCustomPlot->xAxis->setLabelColor("#FF007F");
     ui->qCustomPlot->xAxis->setLabel("(time/s)");
-    ui->qCustomPlot->xAxis->setTickLabelRotation(22.5);
+    //    ui->qCustomPlot->xAxis->setTickLabelRotation(12.5);
     ui->qCustomPlot->xAxis->setLabelPadding(-3);
     ui->qCustomPlot->xAxis->setTickLabelType(QCPAxis::ltDateTime);
     ui->qCustomPlot->xAxis->setDateTimeFormat("mm:ss");
@@ -161,7 +189,6 @@ void AmerdaWidget::initAmerdaCruve()
  */
 void AmerdaWidget::RealTimeDataSlot()
 {
-    ui->TimeLabel->setText(QDateTime::currentDateTime().toString("MM/dd/yyyy hh:mm:ss"));
     QPen pen;
     pen.setWidth(2);
     //获取x轴坐标
@@ -174,12 +201,13 @@ void AmerdaWidget::RealTimeDataSlot()
         QTime time;
         time = QTime::currentTime();
         qsrand(time.msec()+time.second()*10+1);
-        yAxisValue = qrand()%11;
+        yAxisValue = qrand()%700+300+1;
         ui->qCustomPlot->graph()->addData(key,yAxisValue);
         ui->qCustomPlot->graph()->removeDataBefore(key-8);
         ui->qCustomPlot->graph()->rescaleValueAxis();
         lastPointKey = key;
     }
+    //    qDebug()<<"(xAxis,yAxis)=("<<key<<","<<yAxisValue<<")";
     ui->qCustomPlot->xAxis->setRange(key+0.25,8,Qt::AlignRight);//x轴8大格每小格0.25*  移动x坐标
     ui->qCustomPlot->replot();//重绘曲线
 
@@ -221,7 +249,7 @@ bool AmerdaWidget::AmerdaLogSave()
      * 格式化日志文件
      */
     QString ISPASS = NULL, logName=NULL;
-    if(isPass){
+    if(this->Status){
         ISPASS = "TRUE";
     }else {
         ISPASS = "FALSE";
@@ -237,19 +265,28 @@ bool AmerdaWidget::AmerdaLogSave()
         logName = "./ameda-"+QDateTime::currentDateTime().toString("yyyy-MM-dd-hh-mm-ss")+".log";
         qDebug()<<"Log File Path: "+logName;
     }
-  QString text ="===========================================================================\n";
-    text.append("***                         AMEDA  Inspection Log                       ***\n");
-    text.append("***                                                                     ***\n");
-    text.append("***  LOG_TIME: "+QDateTime::currentDateTime().toString("hh:mm:ss MM/dd/yyyy")+
-                " UTC                                  ***\n");
-    text.append("***  QMAKE_TARGET_COPYRIGHT = Copyright(c)2016 ebulent(shenzhen)Co.,LTD.***\n");
-    text.append("***  QMAKE_TARGET_PRODUCT = Ameda                                       ***\n");
-    text.append("***  QMAKE_TARGET_COMPANY = ebulent                                     ***\n");
-    text.append("***  QMAKE_TARGET_DESCRIPTION = qian.yang@ebulent.com                   ***\n");
-    text.append("***                                                                     ***\n");
-    text.append("===========================================================================\n");
-    text.append("测试通过状态 ："+tr("%1").arg(ISPASS));
+    text="=====================================================================\n";
+    text.append("***                         AMEDA  Inspection Log                 ***\n");
+    text.append("***                                                               ***\n");
+    text.append("***  INTERNATIONAL STANDARD ATMOSPHERE :1Mpa≈760mmHg              ***\n");
+    text.append("***  LOG_TIME :  "+QDateTime::currentDateTime().toString("hh:mm:ss MM/dd/yyyy")+
+                " UTC                          ***\n");
+    text.append("***  COPYRIGHT :  Copyright(c)2016 ebulent(shenzhen)Co.,LTD.      ***\n");
+    text.append("***  PRODUCT :  Ameda                                             ***\n");
+    text.append("***  COMPANY :  ebulent                                           ***\n");
+    text.append("***  DESCRIPTION :  qian.yang@ebulent.com                         ***\n");
+    text.append("***                                                               ***\n");
+    text.append("=====================================================================\n");
 
+    text.append("------>Speed Switch : "+tr("%1").arg(ui->comboBox->currentText())+"\n");
+    text.append("------>Suction Switch : "+tr("%1").arg(ui->comboBox_2->currentText())+"\n");
+    text.append("------>Pumping Numbers : "+tr("%1").arg(ui->comboBox_3->currentText())+"\n");
+    text.append("Parameters Output:\n");
+    text.append("------>MaxValue in 3 minutes : "+tr("%1").arg(ui->MaxValueLineEdit->text())+" mmHg\n");
+    text.append("------>MinValue in 3 minutes : "+tr("%1").arg(ui->MinValueLineEdit->text())+" mmHg\n");
+    text.append("------>Period/Frequency :"+tr("%1").arg(ui->FrequenceLineEdit->text())+" s\n");
+    text.append("=====================================================================\n");
+    text.append("------>测试通过状态 ："+tr("%1").arg(ISPASS));
 
     //保存日志
     bool result = help->WriteSaveFile(logName,text);
@@ -305,10 +342,28 @@ void AmerdaWidget::paintEvent(QPaintEvent *)
  */
 void AmerdaWidget::on_TestButton_clicked()
 {
-    qDebug()<<"Start Inspection:"<<ui->comboBox->currentText()<<"+"<<ui->comboBox_2->currentText();
-    amerda =  new AmerdaThread();
     amerda =new AmerdaThread(this);
-    amerda->start();
+    if(isStopTesting){
+        connect(updateTimer,SIGNAL(timeout()),this,SLOT(RealTimeDataSlot()));//打开数据停止绘制曲线
+        qDebug()<<"Start Inspection:"<<ui->comboBox->currentText()<<"+"<<
+                  ui->comboBox_2->currentText()<<"+"<<ui->comboBox_3->currentText();
+        if(isEnglish){
+            ui->TestButton->setText("Start");
+        }else {
+            ui->TestButton->setText("启动");
+        }
+        amerda->start();
+    }else {
+        qDebug()<<"[kill the thread.]";
+        amerda->terminate();
+        disconnect(updateTimer,SIGNAL(timeout()),this,SLOT(RealTimeDataSlot()));//关闭数据停止绘制曲线
+        if(isEnglish){
+            ui->TestButton->setText("Stop");
+        }else {
+            ui->TestButton->setText("停止");
+        }
+    }
+    isStopTesting = !isStopTesting;
 }
 /**
  * @brief AmerdaWidget::on_SaveButton_clicked
@@ -349,14 +404,22 @@ void AmerdaWidget::on_SaveButton_clicked()
 void AmerdaWidget::on_LanguageButton_clicked()
 {
     qDebug()<<"进入设置语言函数:"<<isEnglish;
-    isEnglish = !isEnglish;
-    if(isEnglish){
+    if(!isEnglish){
         setLanguage("English");
         ui->qCustomPlot->graph(0)->setName("Pressure Cruve");
     }else {
         setLanguage("Chinese");
         ui->qCustomPlot->graph(0)->setName("压力曲线");
     }
+    isEnglish = !isEnglish;
+}
+/**
+ * @brief AmerdaWidget::SystemTimeSlot
+ * 系统时间显示
+ */
+void AmerdaWidget::SystemTimeSlot()
+{
+    ui->TimeLabel->setText(QDateTime::currentDateTime().toString("MM/dd/yyyy hh:mm:ss"));
 }
 
 int AmerdaWidget::UDiskDetection()
@@ -391,11 +454,31 @@ int AmerdaWidget::UDiskDetection()
 
 void AmerdaWidget::SLEEP(int ms)
 {
-    for(int i=0;i<10000;i++)
+    for(int i=0;i<1000;i++)
     {
-        for(int j=0;j<10*ms;j++)
+        for(int j=0;j<1000*ms;j++)
         {
             ;
         }
+    }
+}
+
+void AmerdaWidget::on_LogButton_clicked()
+{
+    if(isPreview){
+        edit->setGeometry(width/2-300,height/2-200,600,400);
+        edit->setText(text);
+        edit->show();
+    }else {
+        edit->close();
+    }
+    isPreview = !isPreview;
+}
+
+void AmerdaWidget::mousePressEvent(QMouseEvent *event)
+{
+    if (event->type()==QEvent::MouseButtonPress) {
+        edit->close();
+        event->accept();
     }
 }

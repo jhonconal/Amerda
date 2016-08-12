@@ -21,10 +21,13 @@
 #include <QPainter>
 #include <QPaintEvent>
 #include <QMessageBox>
+#include <QMouseEvent>
+#include <QDesktopWidget>
 #include"dirent.h"
 #include "qcustomplot.h"
 #include "helper.h"
 #include "amerdathread.h"
+#include "messagebox.h"
 
 #define DESKTOP
 //#define iMX6
@@ -40,6 +43,11 @@ class AmerdaWidget : public QWidget
 public:
     explicit AmerdaWidget(QWidget *parent = 0);
     ~AmerdaWidget();
+    /**
+     * @brief init
+     * 初始化环境
+     */
+    void init();
     /**
      * @brief setLanguage
      * @param language
@@ -73,11 +81,31 @@ public:
      */
     void setParametersValue(qreal Max,qreal Min,qreal Frquency,bool Status );
     /**
-     * @brief AmerdaLog
+     * @brief AmerdaLogSave
      * 测试日志保存
      */
     bool AmerdaLogSave();
+    /**
+     * @brief AmerdaCruveSave
+     * @return
+     * 测试压力曲线保存
+     */
     bool AmerdaCruveSave();
+    /**
+     * @brief UDiskSpecialFileDetection
+     * @return default -1 未检测到U盘
+     * 0;//检测到U盘并且里面包含Ameda_data文件夹
+     * 1;//检测到U盘文件、但未发现Ameda_data文件夹、创建这个文件夹
+     * U盘挂载检测函数
+     */
+
+    int UDiskDetection();
+    /**
+     * @brief SLEEP
+     * @param ms  睡眠时间
+     * 睡眠函数
+     */
+    void SLEEP(int ms);
 
 protected:
     void paintEvent(QPaintEvent*);
@@ -103,32 +131,30 @@ private slots:
      * 语言设置槽函数
      */
     void on_LanguageButton_clicked();
-    /**
-     * @brief UDiskSpecialFileDetection
-     * @return default -1 未检测到U盘
-     * 0;//检测到U盘并且里面包含Ameda_data文件夹
-     * 1;//检测到U盘文件、但未发现Ameda_data文件夹、创建这个文件夹
-     * U盘挂载检测函数
-     */
-    int UDiskDetection();
-    /**
-     * @brief SLEEP
-     * @param ms  睡眠时间
-     * 睡眠函数
-     */
-    void SLEEP(int ms);
+
+    void SystemTimeSlot();
+    void on_LogButton_clicked();
+
+protected:
+    void mousePressEvent(QMouseEvent *event);
 private:
     Ui::AmerdaWidget *ui;
-    QTimer *updateTimer;
+    QTimer *updateTimer,*systemTimer;
     float Data1,TempData,Data2;
     double xAxisValue,yAxisValue;
-
+    int width,height;
     qreal Max,Min,Frequency;
-    bool Status,isEnglish;
-    bool isPass;//测试通过状态标志
+    bool Status  //测试通过状态标志
+         ,isEnglish
+         ,isPreview//是否预览
+         ,isStopTesting;//termirate the testing or not
+    QTextEdit *edit;//预览文本框
     int  UDISK_STATUS=-1;//U Disk状态
     Helper *help;
     AmerdaThread *amerda;
+    MessageBox *messageBox;
+    QString text ;//log save QString
+    QDesktopWidget *desktop;
 };
 
 #endif // AMERDAWIDGET_H

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>977</width>
-    <height>531</height>
+    <width>901</width>
+    <height>609</height>
    </rect>
   </property>
   <property name="font">
@@ -68,26 +68,22 @@ background-color: rgb(76, 76, 76);
           </property>
           <item row="0" column="0">
            <layout class="QGridLayout" name="gridLayout_6">
+            <property name="verticalSpacing">
+             <number>6</number>
+            </property>
             <item row="0" column="0">
              <layout class="QGridLayout" name="gridLayout_2">
               <property name="topMargin">
-               <number>2</number>
+               <number>1</number>
               </property>
-              <item row="0" column="1">
-               <spacer name="horizontalSpacer_2">
-                <property name="orientation">
-                 <enum>Qt::Horizontal</enum>
-                </property>
-                <property name="sizeHint" stdset="0">
-                 <size>
-                  <width>40</width>
-                  <height>20</height>
-                 </size>
-                </property>
-               </spacer>
-              </item>
               <item row="0" column="0">
                <widget class="QLabel" name="Label_2">
+                <property name="minimumSize">
+                 <size>
+                  <width>0</width>
+                  <height>38</height>
+                 </size>
+                </property>
                 <property name="font">
                  <font>
                   <pointsize>18</pointsize>
@@ -105,30 +101,32 @@ background-color: rgb(76, 76, 76);
                 </property>
                </widget>
               </item>
-              <item row="0" column="2">
-               <widget class="QLabel" name="label">
-                <property name="font">
-                 <font>
-                  <pointsize>16</pointsize>
-                  <weight>75</weight>
-                  <bold>true</bold>
-                 </font>
+              <item row="0" column="1">
+               <spacer name="horizontalSpacer_2">
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
                 </property>
-                <property name="styleSheet">
-                 <string notr="true">color: rgb(85, 170, 0);</string>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>40</width>
+                  <height>20</height>
+                 </size>
                 </property>
-                <property name="text">
-                 <string>    1Mpa≈760mmHg  </string>
-                </property>
-                <property name="alignment">
-                 <set>Qt::AlignCenter</set>
-                </property>
-               </widget>
+               </spacer>
               </item>
              </layout>
             </item>
             <item row="1" column="0">
              <layout class="QGridLayout" name="gridLayout">
+              <property name="bottomMargin">
+               <number>6</number>
+              </property>
+              <property name="horizontalSpacing">
+               <number>3</number>
+              </property>
+              <property name="verticalSpacing">
+               <number>0</number>
+              </property>
               <item row="1" column="0">
                <widget class="QComboBox" name="comboBox">
                 <property name="minimumSize">
@@ -140,12 +138,12 @@ background-color: rgb(76, 76, 76);
                 <property name="maximumSize">
                  <size>
                   <width>16777215</width>
-                  <height>40</height>
+                  <height>16777215</height>
                  </size>
                 </property>
                 <property name="font">
                  <font>
-                  <pointsize>15</pointsize>
+                  <pointsize>14</pointsize>
                   <weight>75</weight>
                   <bold>true</bold>
                  </font>
@@ -182,22 +180,22 @@ background-color: rgb(76, 76, 76);
                 </property>
                 <item>
                  <property name="text">
-                  <string>A: SWITCH-&gt;1</string>
+                  <string>SPEED: SWITCH-&gt;1</string>
                  </property>
                 </item>
                 <item>
                  <property name="text">
-                  <string>A: SWITCH-&gt;2</string>
+                  <string>SPEED: SWITCH-&gt;2</string>
                  </property>
                 </item>
                 <item>
                  <property name="text">
-                  <string>A: SWITCH-&gt;3</string>
+                  <string>SPEED: SWITCH-&gt;3</string>
                  </property>
                 </item>
                 <item>
                  <property name="text">
-                  <string>A: SWITCH-&gt;4</string>
+                  <string>SPEED: SWITCH-&gt;4</string>
                  </property>
                 </item>
                </widget>
@@ -213,12 +211,12 @@ background-color: rgb(76, 76, 76);
                 <property name="maximumSize">
                  <size>
                   <width>16777215</width>
-                  <height>40</height>
+                  <height>16777215</height>
                  </size>
                 </property>
                 <property name="font">
                  <font>
-                  <pointsize>15</pointsize>
+                  <pointsize>14</pointsize>
                   <weight>75</weight>
                   <bold>true</bold>
                  </font>
@@ -255,27 +253,47 @@ background-color: rgb(76, 76, 76);
                 </property>
                 <item>
                  <property name="text">
-                  <string>B: SWITCH-&gt;1</string>
+                  <string>SUCTION: SWITCH-&gt;1</string>
                  </property>
                 </item>
                 <item>
                  <property name="text">
-                  <string>B: SWITCH-&gt;2</string>
+                  <string>SUCTION: SWITCH-&gt;2</string>
                  </property>
                 </item>
                 <item>
                  <property name="text">
-                  <string>B: SWITCH-&gt;3</string>
+                  <string>SUCTION: SWITCH-&gt;3</string>
                  </property>
                 </item>
                 <item>
                  <property name="text">
-                  <string>B: SWITCH-&gt;4</string>
+                  <string>SUCTION: SWITCH-&gt;4</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>SUCTION: SWITCH-&gt;5</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>SUCTION: SWITCH-&gt;6</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>SUCTION: SWITCH-&gt;7</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>SUCTION: SWITCH-&gt;8</string>
                  </property>
                 </item>
                </widget>
               </item>
-              <item row="1" column="2">
+              <item row="1" column="3">
                <widget class="QPushButton" name="TestButton">
                 <property name="minimumSize">
                  <size>
@@ -286,13 +304,16 @@ background-color: rgb(76, 76, 76);
                 <property name="maximumSize">
                  <size>
                   <width>16777215</width>
-                  <height>40</height>
+                  <height>16777215</height>
                  </size>
                 </property>
                 <property name="font">
                  <font>
                   <pointsize>16</pointsize>
                  </font>
+                </property>
+                <property name="focusPolicy">
+                 <enum>Qt::ClickFocus</enum>
                 </property>
                 <property name="styleSheet">
                  <string notr="true">.QPushButton{
@@ -327,6 +348,66 @@ background-color: rgb(76, 76, 76);
                 <property name="text">
                  <string>测试</string>
                 </property>
+                <property name="flat">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="2">
+               <widget class="QComboBox" name="comboBox_3">
+                <property name="minimumSize">
+                 <size>
+                  <width>0</width>
+                  <height>40</height>
+                 </size>
+                </property>
+                <property name="font">
+                 <font>
+                  <pointsize>14</pointsize>
+                  <weight>75</weight>
+                  <bold>true</bold>
+                 </font>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">.QComboBox{
+	border-style: none;
+	border: 0px;
+	color: #F0F0F0;
+	padding: 5px;	
+	height: 40px;
+	border-radius:5px;
+	background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #4D4D4D, stop:1 #3486FF); 
+}
+
+.QComboBox[focusPolicy=&quot;0&quot;] {
+	border-style: none;
+	border: 0px;
+	color: #F0F0F0;
+	padding: 0px;	
+	min-height: 10px;
+	border-radius:3px;
+	background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #4D4D4D, stop:1 #3486FF); 
+}
+
+.QComboBox:hover{ 
+	background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #636363, stop:1 #3486FF);
+}
+
+.QComboBox:pressed{ 
+	background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #4D4D4D, stop:1 #3486FF);
+}
+</string>
+                </property>
+                <item>
+                 <property name="text">
+                  <string>PUMPING : SINGLE</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>PUMPING : DUAL</string>
+                 </property>
+                </item>
                </widget>
               </item>
              </layout>
@@ -341,17 +422,20 @@ background-color: rgb(76, 76, 76);
          <property name="styleSheet">
           <string notr="true"/>
          </property>
-         <layout class="QGridLayout" name="gridLayout_10" rowstretch="0,10">
+         <layout class="QGridLayout" name="gridLayout_10" rowstretch="0,10,0">
           <property name="leftMargin">
-           <number>1</number>
+           <number>0</number>
           </property>
           <property name="topMargin">
            <number>0</number>
           </property>
           <property name="rightMargin">
-           <number>1</number>
+           <number>0</number>
           </property>
           <property name="bottomMargin">
+           <number>0</number>
+          </property>
+          <property name="verticalSpacing">
            <number>3</number>
           </property>
           <item row="0" column="0">
@@ -360,7 +444,10 @@ background-color: rgb(76, 76, 76);
              <number>2</number>
             </property>
             <property name="horizontalSpacing">
-             <number>6</number>
+             <number>2</number>
+            </property>
+            <property name="verticalSpacing">
+             <number>0</number>
             </property>
             <item row="0" column="1">
              <spacer name="horizontalSpacer">
@@ -390,27 +477,101 @@ background-color: rgb(76, 76, 76);
     border:1px solid rgb(255,255,255);</string>
               </property>
               <property name="text">
-               <string>压力曲线:</string>
+               <string>标准区间:</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="4">
+             <widget class="QLabel" name="PressureAreaLabel">
+              <property name="font">
+               <font>
+                <pointsize>15</pointsize>
+               </font>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">color: #f0f0f0;
+ border-radius:5px;
+    border:1px solid rgb(85, 170, 0);</string>
+              </property>
+              <property name="text">
+               <string>PressureArea</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="3">
+             <widget class="QLineEdit" name="SpeedAreaLineEdit">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>35</height>
+               </size>
+              </property>
+              <property name="font">
+               <font>
+                <pointsize>14</pointsize>
+               </font>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">color: rgb(85, 170, 0);</string>
+              </property>
+              <property name="text">
+               <string>0-10</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignCenter</set>
+              </property>
+              <property name="readOnly">
+               <bool>true</bool>
               </property>
              </widget>
             </item>
             <item row="0" column="2">
-             <widget class="QLabel" name="TimeLabel">
+             <widget class="QLabel" name="SpeedAreaLabel">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>0</height>
+               </size>
+              </property>
               <property name="font">
                <font>
-                <pointsize>16</pointsize>
-                <weight>75</weight>
-                <bold>true</bold>
+                <pointsize>15</pointsize>
                </font>
               </property>
               <property name="styleSheet">
-               <string notr="true">color: rgb(255, 255, 255);</string>
+               <string notr="true">color: #f0f0f0;
+ border-radius:5px;
+    border:1px solid rgb(85, 170, 0);</string>
               </property>
               <property name="text">
-               <string>         TIME       </string>
+               <string>SpeedArea:</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="5">
+             <widget class="QLineEdit" name="PressureAreeaLineEdit">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>35</height>
+               </size>
+              </property>
+              <property name="font">
+               <font>
+                <pointsize>14</pointsize>
+               </font>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">color: rgb(85, 170, 0);</string>
+              </property>
+              <property name="text">
+               <string>400-800 mmHg</string>
               </property>
               <property name="alignment">
                <set>Qt::AlignCenter</set>
+              </property>
+              <property name="readOnly">
+               <bool>true</bool>
               </property>
              </widget>
             </item>
@@ -420,7 +581,7 @@ background-color: rgb(76, 76, 76);
            <widget class="QCustomPlot" name="qCustomPlot" native="true">
             <property name="font">
              <font>
-              <pointsize>15</pointsize>
+              <pointsize>14</pointsize>
              </font>
             </property>
             <property name="styleSheet">
@@ -430,13 +591,39 @@ background-color: rgb(76, 76, 76);
             </property>
            </widget>
           </item>
+          <item row="2" column="0">
+           <widget class="QLabel" name="TimeLabel">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>25</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <pointsize>16</pointsize>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">color: rgb(85, 170, 0);</string>
+            </property>
+            <property name="text">
+             <string>         TIME       </string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
          </layout>
         </widget>
        </item>
       </layout>
      </item>
      <item row="0" column="1">
-      <layout class="QGridLayout" name="gridLayout_12" rowstretch="1,10,5">
+      <layout class="QGridLayout" name="gridLayout_12" rowstretch="1,10,5,0,0">
        <item row="1" column="0">
         <widget class="QFrame" name="frame_4">
          <property name="styleSheet">
@@ -895,7 +1082,7 @@ color: rgb(255, 255, 255);</string>
          </layout>
         </widget>
        </item>
-       <item row="2" column="0">
+       <item row="4" column="0">
         <widget class="QPushButton" name="SaveButton">
          <property name="minimumSize">
           <size>
@@ -948,6 +1135,67 @@ color: rgb(255, 255, 255);</string>
           <string>保存</string>
          </property>
         </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QPushButton" name="LogButton">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>40</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>16</pointsize>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">.QPushButton{
+	border-style: none;
+	border: 0px;
+	color: #F0F0F0;
+	padding: 5px;	
+	height: 40px;
+	border-radius:5px;
+	background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #4D4D4D, stop:1 #3486FF); 
+}
+
+.QPushButton[focusPolicy=&quot;0&quot;] {
+	border-style: none;
+	border: 0px;
+	color: #F0F0F0;
+	padding: 0px;	
+	min-height: 10px;
+	border-radius:3px;
+	background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #4D4D4D, stop:1 #3486FF); 
+}
+
+.QPushButton:hover{ 
+	background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #636363, stop:1 #3486FF);
+}
+
+.QPushButton:pressed{ 
+	background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #4D4D4D, stop:1 #3486FF);
+}
+</string>
+         </property>
+         <property name="text">
+          <string>日志预览</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0">
+        <spacer name="verticalSpacer_2">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
        </item>
       </layout>
      </item>
