@@ -107,6 +107,7 @@ public:
      */
     void SLEEP(int ms);
 
+
 protected:
     void paintEvent(QPaintEvent*);
 
@@ -149,12 +150,14 @@ private:
          ,isPreview//是否预览
          ,isStopTesting;//termirate the testing or not
     QTextEdit *edit;//预览文本框
-    int  UDISK_STATUS=-1;//U Disk状态
+    int  UDISK_STATUS;//U Disk状态
     Helper *help;
     AmerdaThread *amerda;
-    MessageBox *messageBox;
+//    MessageBox *messageBox;
     QString text ;//log save QString
     QDesktopWidget *desktop;
+
+    double xAxisKey;
 };
 
 #endif // AMERDAWIDGET_H

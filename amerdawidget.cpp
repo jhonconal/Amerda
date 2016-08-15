@@ -20,7 +20,7 @@ AmerdaWidget::AmerdaWidget(QWidget *parent) :
     ui(new Ui::AmerdaWidget)
 {
     ui->setupUi(this);
-    init();
+    init();//初始化参数
 
     updateTimer->setInterval(1000);
     systemTimer->setInterval(1000);
@@ -41,6 +41,7 @@ AmerdaWidget::AmerdaWidget(QWidget *parent) :
         qDebug()<<"UDisk uMounted.";
         //        QMessageBox::about(NULL,"UDisk Detection","UDisk uMounted.");
     }
+
     this->resize(width,height);
     //    this->resize(1024,768);
     //    setWindowFlags(Qt::FramelessWindowHint);
@@ -61,6 +62,7 @@ void AmerdaWidget::init()
     isEnglish = true;
     isPreview = true;
     isStopTesting = false;
+    UDISK_STATUS = -1;
 
     desktop = QApplication::desktop();
     width  = desktop->screenGeometry().width();
@@ -129,24 +131,36 @@ void AmerdaWidget::initParametersValue()
  */
 void AmerdaWidget::initAmerdaCruve()
 {
-    QPen pen;
+    QPen pen,pen2;
     QFont font,font2;
     font.setBold(true);
     font2.setBold(true);
     font2.setPointSize(15);
     font.setPointSize(12);
     pen.setWidth(1);
-    pen.setColor(QColor(255, 0, 127));
+    pen2.setWidth(2);
+    pen2.setColor(QColor(255, 0, 127));
+    pen.setColor(Qt::blue);
     ui->qCustomPlot->legend->setVisible(true);
     ui->qCustomPlot->legend->setTextColor(Qt::blue);
     ui->qCustomPlot->addGraph();
-    ui->qCustomPlot->graph()->setPen(pen);
+    ui->qCustomPlot->graph(0)->setPen(pen);
     ui->qCustomPlot->graph()->setAntialiasedFill(true);
     if(setLanguage("English")){
         ui->qCustomPlot->graph(0)->setName("Pressure Cruve");
     }else {
         ui->qCustomPlot->graph(0)->setName("压力曲线");
     }
+    //添加 Upper Lower 刻度线
+    //===================================================================
+    ui->qCustomPlot->addGraph();
+    ui->qCustomPlot->graph(1)->setPen(pen2);
+
+    ui->qCustomPlot->addGraph();
+    ui->qCustomPlot->graph(2)->setPen(pen2);
+    ui->qCustomPlot->legend->removeItem(ui->qCustomPlot->legend->itemCount()-1);
+    ui->qCustomPlot->legend->removeItem(ui->qCustomPlot->legend->itemCount()-1);
+   //===================================================================
     ui->qCustomPlot->axisRect()->setupFullAxesBox();
     //  ui->qCustomPlot->plotLayout()->insertRow(0);
     //  ui->qCustomPlot->plotLayout()->addElement(0, 0, new QCPPlotTitle(ui->qCustomPlot, "Pressure Cruve"));
@@ -159,7 +173,7 @@ void AmerdaWidget::initAmerdaCruve()
     ui->qCustomPlot->yAxis->setAutoTickStep(false);
     ui->qCustomPlot->yAxis->setRangeReversed(false);
     ui->qCustomPlot->yAxis->setLabelColor("#FF007F");
-    ui->qCustomPlot->yAxis->setRange(300,1000);
+    ui->qCustomPlot->yAxis->setRange(300,800);
     ui->qCustomPlot->yAxis->setTickStep(50);
     ui->qCustomPlot->yAxis->setLabel("(pressure/mmHg)");
     //    ui->qCustomPlot->yAxis->setLabel("(pressure/Mpa)");
@@ -167,7 +181,7 @@ void AmerdaWidget::initAmerdaCruve()
     //绘制y2轴信息
     ui->qCustomPlot->yAxis2->setAutoTickStep(false);
     ui->qCustomPlot->yAxis2->setRangeReversed(false);
-    ui->qCustomPlot->yAxis2->setRange(300,1000);
+    ui->qCustomPlot->yAxis2->setRange(300,800);
     ui->qCustomPlot->yAxis2->setTickStep(50);
     //绘制x轴信息
     ui->qCustomPlot->xAxis->setTickLabelFont(font);
@@ -182,7 +196,8 @@ void AmerdaWidget::initAmerdaCruve()
     ui->qCustomPlot->xAxis->setDateTimeFormat("mm:ss");
     //ui->qCustomPlot->xAxis->setDateTimeFormat("hh:mm:ss");
 
-}
+ }
+
 /**
  * @brief AmerdaWidget::RealTimeDataSlot
  * 实时yValue
@@ -191,22 +206,29 @@ void AmerdaWidget::RealTimeDataSlot()
 {
     QPen pen;
     pen.setWidth(2);
+    QTime time;
+    time = QTime::currentTime();
     //获取x轴坐标
     double key = QDateTime::currentDateTime().toMSecsSinceEpoch()/1000.0;
-
+    xAxisKey =key;
     static double lastPointKey = 0.0;
 
     if(key - lastPointKey >0.025)
     {
-        QTime time;
-        time = QTime::currentTime();
         qsrand(time.msec()+time.second()*10+1);
-        yAxisValue = qrand()%700+300+1;
-        ui->qCustomPlot->graph()->addData(key,yAxisValue);
-        ui->qCustomPlot->graph()->removeDataBefore(key-8);
-        ui->qCustomPlot->graph()->rescaleValueAxis();
+        yAxisValue = qrand()%500+301;
+        ui->qCustomPlot->graph(0)->addData(key,yAxisValue);
+        ui->qCustomPlot->graph(0)->removeDataBefore(key-8);
+//        ui->qCustomPlot->graph(0)->rescaleValueAxis();//坐标值自动缩放
         lastPointKey = key;
     }
+    //添加标定刻度线
+    ui->qCustomPlot->graph(1)->addData(0,400);
+    ui->qCustomPlot->graph(1)->addData(xAxisKey+1,400);
+    ui->qCustomPlot->graph(2)->addData(0,600);
+    ui->qCustomPlot->graph(2)->addData(xAxisKey+1,600);
+
+
     //    qDebug()<<"(xAxis,yAxis)=("<<key<<","<<yAxisValue<<")";
     ui->qCustomPlot->xAxis->setRange(key+0.25,8,Qt::AlignRight);//x轴8大格每小格0.25*  移动x坐标
     ui->qCustomPlot->replot();//重绘曲线
@@ -268,7 +290,7 @@ bool AmerdaWidget::AmerdaLogSave()
     text="=====================================================================\n";
     text.append("***                         AMEDA  Inspection Log                 ***\n");
     text.append("***                                                               ***\n");
-    text.append("***  INTERNATIONAL STANDARD ATMOSPHERE :1Mpa≈760mmHg              ***\n");
+    text.append("***  INTERNATIONAL STANDARD ATMOSPHERE:1Mpa≈760mmHg              ***\n");
     text.append("***  LOG_TIME :  "+QDateTime::currentDateTime().toString("hh:mm:ss MM/dd/yyyy")+
                 " UTC                          ***\n");
     text.append("***  COPYRIGHT :  Copyright(c)2016 ebulent(shenzhen)Co.,LTD.      ***\n");
@@ -278,13 +300,13 @@ bool AmerdaWidget::AmerdaLogSave()
     text.append("***                                                               ***\n");
     text.append("=====================================================================\n");
 
-    text.append("------>Speed Switch : "+tr("%1").arg(ui->comboBox->currentText())+"\n");
-    text.append("------>Suction Switch : "+tr("%1").arg(ui->comboBox_2->currentText())+"\n");
-    text.append("------>Pumping Numbers : "+tr("%1").arg(ui->comboBox_3->currentText())+"\n");
+    text.append("------>Speed Switch : "+tr("[%1").arg(ui->comboBox->currentText())+"]\n");
+    text.append("------>Suction Switch : "+tr("[%1").arg(ui->comboBox_2->currentText())+"]\n");
+    text.append("------>Pumping Numbers : "+tr("[%1").arg(ui->comboBox_3->currentText())+"]\n");
     text.append("Parameters Output:\n");
-    text.append("------>MaxValue in 3 minutes : "+tr("%1").arg(ui->MaxValueLineEdit->text())+" mmHg\n");
-    text.append("------>MinValue in 3 minutes : "+tr("%1").arg(ui->MinValueLineEdit->text())+" mmHg\n");
-    text.append("------>Period/Frequency :"+tr("%1").arg(ui->FrequenceLineEdit->text())+" s\n");
+    text.append("------>MaxValue in 3 minutes : "+tr("[%1").arg(ui->MaxValueLineEdit->text())+" mmHg]\n");
+    text.append("------>MinValue in 3 minutes : "+tr("[%1").arg(ui->MinValueLineEdit->text())+" mmHg]\n");
+    text.append("------>Period/Frequency :"+tr("[%1").arg(ui->FrequenceLineEdit->text())+" s]\n");
     text.append("=====================================================================\n");
     text.append("------>测试通过状态 ："+tr("%1").arg(ISPASS));
 
